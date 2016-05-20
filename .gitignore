@@ -1,0 +1,6 @@
+.DS_Store
+Thumbs.db
+/node_modules/
+/server/node_modules/
+/build/bundle.js
+!.editorconfig
