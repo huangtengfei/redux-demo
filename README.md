@@ -191,11 +191,27 @@ export default connect()(App);
 
 从技术上讲可以将任何一个组件 `connect()` 到 Redux Store，但这会使数据流难以追踪，所以尽量只对顶层组件做这个操作。
 
+## 补充
+
+### 为什么调用了 `this.setState` 但 `state` 未改变
+
+`this.setState` 不会立即改变 state ，而是一个异步过程。在调用 `this.setState` 后马上调用 `this.state` 得到的是当前的 state  。所以，如果有依赖于更新后的 state 的操作，可以放在回调中：
+
+```javascript
+this.setState({ myVal: 'newVal'}, function() {
+    // do something with new state
+});
+```
+
+参考 [官方 API][3] 和 [Why calling react setState method doesn't mutate the state immediately?][4] 
+
 ## 参考
 
-[Redux 中文文档][3]
+[Redux 中文文档][5]
 
 
   [1]: https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options
   [2]: https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options
-  [3]: http://cn.redux.js.org/index.html
+  [3]: https://facebook.github.io/react/docs/component-api.html
+  [4]: http://stackoverflow.com/questions/30782948/why-calling-react-setstate-method-doesnt-mutate-the-state-immediately
+  [5]: http://cn.redux.js.org/index.html
