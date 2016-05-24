@@ -1,20 +1,17 @@
 
+import React from 'react'
+import { render } from 'react-dom'
 import { createStore } from 'redux'
+import { Provider } from 'react-redux'
 
 import todoApp from './reducers.js'
-
-import { addTodo, toggleTodo, setFilter, Filters } from './actions.js'
+import App from './App.jsx'
 
 let store = createStore(todoApp)
 
-let unsubscribe = store.subscribe(() => {
-	console.log(store.getState())
-})
-
-store.dispatch(addTodo('build a react app'))
-store.dispatch(addTodo('build a redux app'))
-store.dispatch(toggleTodo(1))
-store.dispatch(setFilter(Filters.SHOW_ACTIVE))
-
-unsubscribe();
-store.dispatch(addTodo('build a todo app'))
+render(
+	<Provider store={store}>
+		<App />
+	</Provider>,
+	document.getElementById('todo')
+)

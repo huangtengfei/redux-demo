@@ -13,6 +13,45 @@ npm run dev
 
 打开 http://localhost:8080 即可看到效果。
 
+## 实现过程
+
+a. 首先，明确应用中对象的结构。对于 todo，需要保存两种数据，所有的任务 `todos` 和 筛选条件 `filter`，这些就是要定义在 state 中的。
+
+b. 明确应用需要哪些操作。对于 todo，有新建 todo、切换 todo 状态和设置筛选条件三种，写好 actions。
+
+c. 明确当有 action 发生时，state 是如何相应改变的。比如新建 todo，就在 todos 中加一条；改变筛选条件时，就将 filter 改成新的条件。根据 state 字段的不同，拆分成不同的 reducer 处理，写好 reducers。
+
+d. 在 store 中将 actions 和 reducers 联系在一起。此时还没有应用的界面，但可以测试一下数据处理逻辑。这个文件通常是 **应用的入口**。
+
+e. 写 React 组件。要注意，首先想好哪些是容器组件（聪明组件），哪些是展示组件（傻瓜组件）。容器组件一般是在最上层，它从 Redux 获取 state 并向 Redux 派发 actions，这个文件也通常是 **组件的入口**。展示组件会根据应用的大小进行拆分，比如对于 todo，拆成 AddTodo、TodoList、Todo 和 TodoFilter 四个展示组件，它们从 props 获取数据和调用回调函数。
+
+f. 连接到 Redux。主要有两步，一步是在 应用的入口 文件中将根组件包在 `<Provider>` 中；一步是在 组件的入口 文件中用 `connect()` 包装组件，将前面写 React 组件模拟用的 state 数据源替换成包装组件从 Redux 获取的 state。
+
+这样实现下来，一个简单的 Redux Demo 的目录结构大概如此：
+
+```
+--redux-demo
+  |--components（组件目录）
+    |--Todo
+      |--actions.js
+      |--reducers.js
+      |--index.js （应用的入口）
+      |--AddTodo.jsx
+      |--TodoList.jsx
+      |--Todo.jsx
+      |--TodoFilter.jsx
+      |--App.jsx （组件的入口）
+      |--index.less
+    |--index.js（入口文件）
+  |--build（输出目录）
+    |--index.html
+    |--bundle.js（输出文件，由 webpack 打包后生成的）
+  |--package.json
+  |--webpack.config.js
+```
+
+下面内容是我学习 Redux 的笔记和总结。
+
 ## Redux 基础
 
 与 Flux 相比，Redux 将 Dispatcher 和 Action、Store 解耦，使 Action 变成了一个纯粹的简单对象，使 Store 变成了一个 pure function（no side-effects，对一个相同的输入无论何时总返回相同结果）。
@@ -172,7 +211,7 @@ react-redux 只有两个 API，即 `<Provider>` 和 `Connect` 。
 
 ```javascript
 render(
-    <Provider>
+    <Provider store={store}>
         <App />
     </Provider>,
     rootElement
