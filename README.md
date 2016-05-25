@@ -220,7 +220,7 @@ render(
 
 ### Connect
 
-`Connect` 用来将包装好的组件连接到 Redux 。它最多接收 [4 个可选参数][2]，返回一个函数，用这个函数接收一个组件类作为参数，最后返回一个和 Redux 关联起来的新组件，形如：
+`Connect` 用来将包装好的组件连接到 Redux，从 Redux Store 接收到全局的 state，然后返回组件中需要的 props 。它最多接收 [4 个可选参数][2]，返回一个函数，用这个函数接收一个组件类作为参数，最后返回一个和 Redux 关联起来的新组件，形如：
 
 ```javascript
 class App extends Component { ... }
